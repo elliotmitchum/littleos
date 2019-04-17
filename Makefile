@@ -1,4 +1,4 @@
-OBJECTS = ./dist/loader.o
+OBJECTS = loader.o kmain.o
 CC = gcc
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 			-nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
@@ -9,30 +9,25 @@ ASFLAGS = -f elf
 all: loader.o kernel.elf os.iso
 
 loader.o: loader.s
-	 mkdir -p ./dist
-	 nasm -f elf32 loader.s -o ./dist/loader.o
+	 nasm -f elf32 loader.s -o loader.o
 
 kernel.elf: $(OBJECTS)
-	mkdir -p ./dist
-	ld $(LDFLAGS) $(OBJECTS) -o ./dist/kernel.elf
+	ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
 
 os.iso: kernel.elf
-	mkdir -p ./dist/iso/boot/grub
-	cp ./dist/kernel.elf ./dist/iso/boot/kernel.elf
-	cp grub.cfg ./dist/iso/boot/grub
-	grub-mkrescue -o ./dist/os.iso ./dist/iso
+	mkdir -p ./iso/boot/grub
+	cp kernel.elf ./iso/boot/kernel.elf
+	cp grub.cfg ./iso/boot/grub
+	grub-mkrescue -o ./iso/os.iso iso
 
 run: os.iso
-	mkdir -p ./dist
-	qemu-system-x86_64 -hda ./dist/os.iso
+	qemu-system-x86_64 -hda ./iso/os.iso
 
 %.o: %.c
-	 $(CC) $(CFLAGS)  $< -o ./dist/$@
+	 $(CC) $(CFLAGS)  $< -o $@
 
 %.o: %.s
-	 $(AS) $(ASFLAGS) $< -o ./dist/$@
+	 $(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -rf ./dist
-	mkdir -p ./dist
-
+	 rm -rf *.o kernel.elf iso
