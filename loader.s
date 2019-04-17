@@ -10,6 +10,8 @@ MAGIC_NUMBER equ 0x1BADB002	; Define the magic number constant, allows. Multiboo
 FLAGS equ 0x0						; Set multiboot flags to zero.
 CHECKSUM equ -MAGIC_NUMBER  	; Calculate the checksum (magic number + checksum + flags should equal 0).
 
+FB equ 0x000B8000
+
 section .text						; Start of the text (code) section.
 									   ; Write Multiboot header.
 	align 4							; The code must be 4 byte aligned as per Multiboot spec.
@@ -19,6 +21,7 @@ section .text						; Start of the text (code) section.
 
 loader:								; Loader label (defined as entry point in linker script).
 	mov eax, 0xCAFEBABE			; Place the number 0xCAFEBABE in the register eax.
+	mov [FB], dword 0xF045
 
 .loop:
 	jmp .loop						; Loop forever.
