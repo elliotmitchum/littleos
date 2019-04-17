@@ -1,3 +1,12 @@
+# littleos
+
+[littleos](https://ordoflammae.github.io/littleosbook) implementation.
+
+## Modifications
+
+- QEMU instead of bochs
+- Docker build environments
+
 ## Resources
 
 - https://ordoflammae.github.io/littleosbook
