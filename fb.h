@@ -33,6 +33,6 @@ struct Frame frame_new(char c, unsigned short fg, unsigned short bg);
 unsigned short frame_format(struct Frame frame);
 
 // frame_write().
-// Write formatted frame to buffer.
+// Write frames to buffer.
 void frame_write(struct Frame * buf, int length);
 

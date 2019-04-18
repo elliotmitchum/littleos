@@ -23,7 +23,7 @@ unsigned short frame_format(struct Frame frame) {
 }
 
 // frame_write().
-// Write formatted frame to buffer.
+// Write frames to buffer.
 void frame_write(struct Frame * buf, int length) {
 	 unsigned short data;
 	 unsigned short offset;
