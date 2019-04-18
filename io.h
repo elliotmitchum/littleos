@@ -1,2 +1,2 @@
-void out(unsigned short data);
+void out(unsigned short d1, unsigned short d2);
 
