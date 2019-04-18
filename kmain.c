@@ -17,45 +17,45 @@
 #define FB_BROWN_LIGHT 14
 #define FB_WHITE 15
 
-struct Cell {
+struct Frame {
 	 char c;
 	 unsigned short fg;
 	 unsigned short bg;
 };
 
-struct Cell cell_new(char c, unsigned short fg, unsigned short bg) {
-	 struct Cell cell;
-	 cell.c = c;
-	 cell.fg = fg;
-	 cell.bg = bg;
-	 return cell;
+struct Frame frame_new(char c, unsigned short fg, unsigned short bg) {
+	 struct Frame frame;
+	 frame.c = c;
+	 frame.fg = fg;
+	 frame.bg = bg;
+	 return frame;
 }
 
-unsigned short cell_format(struct Cell cell) {
+unsigned short frame_format(struct Frame frame) {
 	 unsigned short data;
-	 data = (cell.bg << 4) | cell.fg;
-	 data = data << 8 | cell.c;
+	 data = (frame.bg << 4) | frame.fg;
+	 data = data << 8 | frame.c;
 	 return data;
 }
 
-void cell_write(struct Cell * buf, int length) {
+void frame_write(struct Frame * buf, int length) {
 	 unsigned short data;
 	 unsigned short offset;
 	 for (int i = 0; i < length; i++) {
-		  data = cell_format(buf[i]);
+		  data = frame_format(buf[i]);
 		  offset = sizeof(data) * i;
 		  out(offset, data);
 	 }
 }
 
 void kmain() {
-	 struct Cell buf[] = {
-		  cell_new('0', FB_WHITE, FB_BLACK),
-		  cell_new('x', FB_WHITE, FB_BLACK),
-		  cell_new('3', FB_WHITE, FB_BLACK),
-		  cell_new('7', FB_WHITE, FB_BLACK)
+	 struct Frame buf[] = {
+		  frame_new('0', FB_WHITE, FB_BLACK),
+		  frame_new('x', FB_WHITE, FB_BLACK),
+		  frame_new('3', FB_WHITE, FB_BLACK),
+		  frame_new('7', FB_WHITE, FB_BLACK)
 	 };
 
-	 cell_write(buf, 4);
+	 frame_write(buf, 4);
 }
 
