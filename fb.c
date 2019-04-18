@@ -15,14 +15,14 @@ struct Frame frame_new(char c, unsigned short fg, unsigned short bg) {
 // Format buffer frame formatter.
 unsigned short frame_format(struct Frame frame) {
 	 // Create 2 byte frame cell binary.
-	 // @url https://ordoflammae.github.io/littleosbook/#the-framebuffer<Paste>.
+	 // @url https://ordoflammae.github.io/littleosbook/#the-framebuffer
 	 unsigned short data;
 	 data = (frame.bg << 4) | frame.fg;
 	 data = data << 8 | frame.c;
 	 return data;
 }
 
-// frame_format().
+// frame_write().
 // Write formatted frame to buffer.
 void frame_write(struct Frame * buf, int length) {
 	 unsigned short data;
