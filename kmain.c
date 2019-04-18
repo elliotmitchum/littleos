@@ -17,31 +17,45 @@
 #define FB_BROWN_LIGHT 14
 #define FB_WHITE 15
 
-unsigned short cell(char c, unsigned short fg, unsigned short bg) {
+struct Cell {
+	 char c;
+	 unsigned short fg;
+	 unsigned short bg;
+};
+
+struct Cell cell_new(char c, unsigned short fg, unsigned short bg) {
+	 struct Cell cell;
+	 cell.c = c;
+	 cell.fg = fg;
+	 cell.bg = bg;
+	 return cell;
+}
+
+unsigned short cell_format(struct Cell cell) {
 	 unsigned short data;
-	 data = (bg << 4) | fg;
-	 data = data << 8 | c;
+	 data = (cell.bg << 4) | cell.fg;
+	 data = data << 8 | cell.c;
 	 return data;
 }
 
-void write(unsigned short * buf, int length) {
+void cell_write(struct Cell * buf, int length) {
 	 unsigned short data;
 	 unsigned short offset;
 	 for (int i = 0; i < length; i++) {
-		  data = buf[i];
+		  data = cell_format(buf[i]);
 		  offset = sizeof(data) * i;
 		  out(offset, data);
 	 }
 }
 
 void kmain() {
-	 unsigned short message[] = {
-		  cell('0', FB_WHITE, FB_BLACK),
-		  cell('x', FB_WHITE, FB_BLACK),
-		  cell('3', FB_WHITE, FB_BLACK),
-		  cell('7', FB_WHITE, FB_BLACK)
+	 struct Cell buf[] = {
+		  cell_new('0', FB_WHITE, FB_BLACK),
+		  cell_new('x', FB_WHITE, FB_BLACK),
+		  cell_new('3', FB_WHITE, FB_BLACK),
+		  cell_new('7', FB_WHITE, FB_BLACK)
 	 };
 
-	 write(message, 4);
+	 cell_write(buf, 4);
 }
 
