@@ -24,15 +24,12 @@ struct Frame {
 	 unsigned short bg;
 };
 
-// frame().
-// Create new frame.
+// frame_new.
 struct Frame frame_new(char c, unsigned short fg, unsigned short bg);
 
-// frame_format().
-// Frame buffer frame formatter.
+// frame_format.
 unsigned short frame_format(struct Frame frame);
 
-// frame_write().
-// Write frames to buffer.
+// frame_write.
 void frame_write(struct Frame * buf, int length);
 
