@@ -37,13 +37,13 @@ struct Frame {
 };
 
 // Create new frame.
-struct Frame frame_new(char c, unsigned short fg, unsigned short bg);
+struct Frame fb_frame_new(char c, unsigned short fg, unsigned short bg);
 
 // Format frame for buffer.
-unsigned short frame_format(struct Frame frame);
+unsigned short fb_frame_format(struct Frame frame);
 
 // Write frame to buffer.
-void frame_write(struct Frame * buf, int length);
+void fb_frame_write(struct Frame * buf, int length);
 
 // Move cursor to buffer position.
 void fb_move_cursor(unsigned short post);
