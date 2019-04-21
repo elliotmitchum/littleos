@@ -1,21 +1,3 @@
-FB equ 0x00B8000
-
-global out
-
-; Send a byte to frame buffer.
-out:
-	 
-	 ; Store second arg (data) in EDX.
-	 mov edx, [esp + 8]
-
-	 ; Store first arg (offset) in EBX.
-	 mov ebx, [esp + 4]
-
-	 ; Move data to buffers.
-	 mov [FB + ebx], edx
-
-	 ret
-
 global outb
 
 ; Send a byte to IO port.

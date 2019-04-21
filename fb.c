@@ -1,6 +1,22 @@
 #include "io.h"
 #include "fb.h"
 
+// Frame buffer.
+static char * fb = 0;
+
+// Cursor position.
+static unsigned short pos = 0;
+
+/**
+ * Initialise frame buffer pointer.
+ *
+ * Points internal `fb` variable to frame buffer memory mapped address
+ * `0x000B800`.
+ */
+void fb_init() {
+	 fb = (char *) 0x000B8000;
+}
+
 /**
  * fb_frame_new:
  *
@@ -41,21 +57,22 @@ unsigned short fb_frame_format(struct Frame frame) {
 /**
  * fb_frame_write:
  *
- * Write frames to buffer.
+ * Write frame to buffer and advance cursor.
  *
- * @param buf Frame list.
- * @param length Write length.
+ * @param frame Frame.
  */
-void fb_frame_write(struct Frame * buf, int length) {
-	 unsigned short data;
-	 unsigned short offset;
-	 for (int i = 0; i < length; i++) {
-		  // Convert struct to buffer friendly bits.
-		  data = fb_frame_format(buf[i]);
-		  offset = sizeof(data) * i;
-		  // Call `out` instruction, write frame to buffer.
-		  out(offset, data);
-	 }
+void fb_frame_write(struct Frame frame) {
+	 unsigned short data = fb_frame_format(frame);
+
+	 // Frame byte size.
+	 unsigned short size = 2;
+
+	 // Write frame to buffer with frame byte offset.
+	 fb[pos * size] = data;
+
+	 // Advance cursor.
+	 pos = pos + 1;
+	 fb_move_cursor(pos);
 }
 
 /**
