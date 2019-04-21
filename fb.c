@@ -27,7 +27,7 @@ struct Frame frame_new(char c, unsigned short fg, unsigned short bg) {
  *
  * @param frame Frame.
  * 
- * @return 2 byte buffer friendly frame.
+ * @return 1 byte buffer friendly frame.
  */
 unsigned short frame_format(struct Frame frame) {
 	 // Create 2 byte frame cell binary.
@@ -56,5 +56,28 @@ void frame_write(struct Frame * buf, int length) {
 		  // Call `out` instruction, write frame to buffer.
 		  out(offset, data);
 	 }
+}
+
+/**
+ * Move cursor to buffer position.
+ *
+ * A position is represented in 16 bits, however the `out` argument is 8 bits,
+ * therefore the position must be written twice. Command port is used to
+ * determine if the high or low byte is send.
+ *
+ * @url https://ordoflammae.github.io/littleosbook/#moving-the-cursor
+ * @param pos Cursor position.
+ */
+void fb_move_cursor(unsigned short pos) {
+	 // Single byte number with all bits set to 1.
+	 unsigned char root = 0x00FF;
+
+	 // Signal and write high byte.
+	 outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
+	 outb(FB_DATA_PORT, ((pos >> 8) & root));
+
+	 // Signal and write low byte.
+	 outb(FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
+	 outb(FB_DATA_PORT, pos & root);
 }
 

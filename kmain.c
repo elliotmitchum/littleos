@@ -1,4 +1,5 @@
 #include "fb.h"
+#include "io.h"
 
 void kmain() {
 	 int length = 4;
@@ -13,5 +14,7 @@ void kmain() {
 
 	 // Write frames to buffer.
 	 frame_write(buf, length + 1);
+
+	 fb_move_cursor(20);
 }
 

@@ -1,3 +1,15 @@
+// IO command port address.
+#define FB_COMMAND_PORT 0x3D4
+
+// IO data port address.
+#define FB_DATA_PORT 0x3D5
+
+// High byte signal.
+#define FB_HIGH_BYTE_COMMAND 14
+
+// Low byte signal.
+#define FB_LOW_BYTE_COMMAND 15
+
 // Colours.
 
 #define FB_BLACK 0
@@ -17,19 +29,22 @@
 #define FB_BROWN_LIGHT 14
 #define FB_WHITE 15
 
-// Frame.
+// Frame structure.
 struct Frame {
 	 char c;
 	 unsigned short fg;
 	 unsigned short bg;
 };
 
-// frame_new.
+// Create new frame.
 struct Frame frame_new(char c, unsigned short fg, unsigned short bg);
 
-// frame_format.
+// Format frame for buffer.
 unsigned short frame_format(struct Frame frame);
 
-// frame_write.
+// Write frame to buffer.
 void frame_write(struct Frame * buf, int length);
+
+// Move cursor to buffer position.
+void fb_move_cursor(unsigned short post);
 

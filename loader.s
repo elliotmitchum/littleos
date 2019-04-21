@@ -11,23 +11,19 @@ MAGIC_NUMBER equ 0x1BADB002	; Define the magic number constant, allows. Multiboo
 FLAGS equ 0x0						; Set multiboot flags to zero.
 CHECKSUM equ -MAGIC_NUMBER  	; Calculate the checksum (magic number + checksum + flags should equal 0).
 KERNEL_STACK_SIZE equ 4096
-
 FB equ 0x000B8000
 
 section .text						; Start of the text (code) section.
-									   ; Write Multiboot header.
-	align 4							; The code must be 4 byte aligned as per Multiboot spec.
-	dd MAGIC_NUMBER				; Write the magic number to the machine code for BIOS to identify boot device.
-	dd FLAGS							; Write flags.
-	dd CHECKSUM						; Write checksum.
+	 
+	 ; Write Multiboot header.
+	 align 4							; The code must be 4 byte aligned as per Multiboot spec.
+	 dd MAGIC_NUMBER				; Write the magic number to the machine code for BIOS to identify boot device.
+	 dd FLAGS							; Write flags.
+	 dd CHECKSUM						; Write checksum.
 
 loader:								; Loader label (defined as entry point in linker script).
-	
-	mov eax, 0xCAFEBABE			; Place the number 0xCAFEBABE in the register eax.
-	mov esp, kernel_stack + KERNEL_STACK_SIZE
-	; mov [FB], dword 0xF045
-	; mov [FB+2], dword 0xF04C
-	; mov [FB+4], dword 0xF04C
+
+	 mov esp, kernel_stack + KERNEL_STACK_SIZE
 	 call kmain
 
 .loop:
@@ -37,7 +33,5 @@ loader:								; Loader label (defined as entry point in linker script).
 section .bss
 
 	 align 4
-
-	 kernel_stack:
-		  resb KERNEL_STACK_SIZE
+	 kernel_stack: resb KERNEL_STACK_SIZE
 
