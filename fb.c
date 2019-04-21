@@ -65,7 +65,7 @@ void fb_frame_write(struct Frame frame) {
 	 unsigned short data = fb_frame_format(frame);
 
 	 // Frame byte size.
-	 unsigned short size = 2;
+	 unsigned short size = sizeof(data);
 
 	 // Write frame to buffer with frame byte offset.
 	 fb[pos * size] = data;
