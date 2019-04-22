@@ -76,6 +76,41 @@ void fb_frame_write(struct Frame frame) {
 }
 
 /**
+ * fb_frame_writef_ln:
+ *
+ * Write string to frame buffer with format options, advancing cursor.
+ *
+ * Note: Frame buffer must first be initialised with fb_init().
+ *
+ * @param message Message string.
+ * @param fg Foreground colour.
+ * @param bg Background colour.
+ */
+void fb_frame_writef_ln(char * message, unsigned short fg, unsigned short bg) {
+	 struct Frame frame;
+	 unsigned short i = 0;
+	 while (message[i] != '\0') {
+		  frame = fb_frame_new(message[i], fg, bg);
+		  fb_frame_write(frame);
+		  i++;
+	 }
+}
+
+/**
+ * fb_frame_write_ln:
+ *
+ * Write string to frame buffer, advancing cursor.
+ *
+ * Implements fb_frame_writef_ln with default colours.
+ *
+ * @see fb_frame_writef_ln
+ * @param message Message string.
+ */
+void fb_frame_write_ln(char * message) {
+	 fb_frame_writef_ln(message, FB_WHITE, FB_BLACK);
+}
+
+/**
  * fb_move_cursor:
  *
  * Move cursor to buffer position.

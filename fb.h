@@ -48,6 +48,12 @@ unsigned short fb_frame_format(struct Frame frame);
 // Write frame to buffer and advance cursor.
 void fb_frame_write(struct Frame frame);
 
+// Write string to frame buffer with format options, advancing cursor,
+void fb_frame_writef_ln(char * message, unsigned short fb, unsigned short bg);
+
+// Write string to frame buffer, advancing cursor.
+void fb_frame_write_ln(char * message);
+
 // Move cursor to buffer position.
 void fb_move_cursor(unsigned short post);
 
