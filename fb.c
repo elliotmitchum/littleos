@@ -14,7 +14,7 @@ static unsigned short pos = 0;
  * `0x000B800`.
  */
 void fb_init() {
-	 fb = (char *) 0x000B8000;
+  fb = (char *) 0x000B8000;
 }
 
 /**
@@ -29,11 +29,11 @@ void fb_init() {
  * @return Frame Constructed frame.
  */
 struct Frame fb_frame_new(char c, unsigned short fg, unsigned short bg) {
-	 struct Frame frame;
-	 frame.c = c;
-	 frame.fg = fg;
-	 frame.bg = bg;
-	 return frame;
+  struct Frame frame;
+  frame.c = c;
+  frame.fg = fg;
+  frame.bg = bg;
+  return frame;
 }
 
 /**
@@ -46,12 +46,12 @@ struct Frame fb_frame_new(char c, unsigned short fg, unsigned short bg) {
  * @return 1 byte buffer friendly frame.
  */
 unsigned short fb_frame_format(struct Frame frame) {
-	 // Create 2 byte frame cell binary.
-	 // @url https://ordoflammae.github.io/littleosbook/#the-framebuffer
-	 unsigned short data;
-	 data = (frame.bg << 4) | frame.fg;
-	 data = data << 8 | frame.c;
-	 return data;
+  // Create 2 byte frame cell binary.
+  // @url https://ordoflammae.github.io/littleosbook/#the-framebuffer
+  unsigned short data;
+  data = (frame.bg << 4) | frame.fg;
+  data = data << 8 | frame.c;
+  return data;
 }
 
 /**
@@ -62,17 +62,17 @@ unsigned short fb_frame_format(struct Frame frame) {
  * @param frame Frame.
  */
 void fb_frame_write(struct Frame frame) {
-	 unsigned short data = fb_frame_format(frame);
+  unsigned short data = fb_frame_format(frame);
 
-	 // Frame byte size.
-	 unsigned short size = sizeof(data);
+  // Frame byte size.
+  unsigned short size = sizeof(data);
 
-	 // Write frame to buffer with frame byte offset.
-	 fb[pos * size] = data;
+  // Write frame to buffer with frame byte offset.
+  fb[pos * size] = data;
 
-	 // Advance cursor.
-	 pos = pos + 1;
-	 fb_move_cursor(pos);
+  // Advance cursor.
+  pos = pos + 1;
+  fb_move_cursor(pos);
 }
 
 /**
@@ -87,13 +87,13 @@ void fb_frame_write(struct Frame frame) {
  * @param bg Background colour.
  */
 void fb_frame_writef_ln(char * message, unsigned short fg, unsigned short bg) {
-	 struct Frame frame;
-	 unsigned short i = 0;
-	 while (message[i] != '\0') {
-		  frame = fb_frame_new(message[i], fg, bg);
-		  fb_frame_write(frame);
-		  i++;
-	 }
+  struct Frame frame;
+  unsigned short i = 0;
+  while (message[i] != '\0') {
+    frame = fb_frame_new(message[i], fg, bg);
+    fb_frame_write(frame);
+    i++;
+  }
 }
 
 /**
@@ -107,7 +107,7 @@ void fb_frame_writef_ln(char * message, unsigned short fg, unsigned short bg) {
  * @param message Message string.
  */
 void fb_frame_write_ln(char * message) {
-	 fb_frame_writef_ln(message, FB_WHITE, FB_BLACK);
+  fb_frame_writef_ln(message, FB_WHITE, FB_BLACK);
 }
 
 /**
@@ -123,15 +123,15 @@ void fb_frame_write_ln(char * message) {
  * @param pos Cursor position.
  */
 void fb_move_cursor(unsigned short pos) {
-	 // Single byte number with all bits set to 1.
-	 unsigned char root = 0x00FF;
+  // Single byte number with all bits set to 1.
+  unsigned char root = 0x00FF;
 
-	 // Signal and write high byte.
-	 outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
-	 outb(FB_DATA_PORT, ((pos >> 8) & root));
+  // Signal and write high byte.
+  outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
+  outb(FB_DATA_PORT, ((pos >> 8) & root));
 
-	 // Signal and write low byte.
-	 outb(FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
-	 outb(FB_DATA_PORT, pos & root);
+  // Signal and write low byte.
+  outb(FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
+  outb(FB_DATA_PORT, pos & root);
 }
 

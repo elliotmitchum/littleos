@@ -31,9 +31,9 @@
 
 // Frame structure.
 struct Frame {
-	 char c;
-	 unsigned short fg;
-	 unsigned short bg;
+  char c;
+  unsigned short fg;
+  unsigned short bg;
 };
 
 // Initialise freame buffer pointer.
